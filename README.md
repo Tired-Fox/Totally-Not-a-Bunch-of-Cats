@@ -18,6 +18,18 @@ Temp remove certificate fetch of icons in `node_modules\.pnpm\astro-icon@0.8.1\n
 * Project Pages
 * @Person tags/links for projects and posts
 
+## Pages
+
+* blog
+  * Landing
+  * Individual blog pages
+* projects
+  * Landing
+  * Individual project pages
+* team
+  * Landing
+  * Individual team member pages
+
 ## Art Assets
 
 * Arrow icons

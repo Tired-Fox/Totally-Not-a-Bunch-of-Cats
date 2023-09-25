@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layout/Layout.astro";
+import FormattedDate from "@component/FormattedDate.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout>
+    <h1 class="text-3xl font-bold">Meet the Team</h1>
+</Layout>

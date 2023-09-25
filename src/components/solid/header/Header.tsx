@@ -1,7 +1,8 @@
 import { HeaderLink } from "./HeaderLink";
 // import { Toaster } from "../toaster/Toaster";
-import { createEffect, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
+import { uri } from "../../../scripts/utils.ts";
 
 type Props = { pathname: string };
 
@@ -95,12 +96,12 @@ export const Header = ({ pathname }: Props) => {
             <em className="text-slate-700/40 text-3xl font-bold">Menu</em>
             <ul className="mt-2 text-lg list-disc list-inside">
               <li>
-                <HeaderLink href="/Totally-Not-a-Bunch-of-Cats/" pathname={pathname} class="h-fit">
+                <HeaderLink href={uri('/')} pathname={pathname} class="h-fit">
                   Home
                 </HeaderLink>
               </li>
               <li>
-                <HeaderLink href="/Totally-Not-a-Bunch-of-Cats/blog" pathname={pathname} class="h-fit">
+                <HeaderLink href={uri('/blog/')} pathname={pathname} class="h-fit">
                   Blog
                 </HeaderLink>
               </li>
