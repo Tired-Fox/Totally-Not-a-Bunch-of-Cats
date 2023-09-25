@@ -22,9 +22,10 @@ let posts = (await getCollection("blog"))
 posts.push(
   youtube({
     // The source is just the video id
-    src: "LDU_Txk06tM",
-    href: "/Totally-Not-a-Bunch-of-Cats/blog/",
-    label: "Sample Video",
+    videoId: "LDU_Txk06tM",
+    href: "/blog/",
+    label: "Sample youtube video",
+    start: 168,
     autoNext: true,
   })
 );
@@ -34,7 +35,6 @@ posts.push(
     // TODO: Make sure to set this to a local image
     src: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
     type: "video/mp4",
-    href: "/Totally-Not-a-Bunch-of-Cats/blog/",
     label: "Sample Video",
     start: 719,
     autoNext: true,
@@ -90,10 +90,12 @@ posts.push(
     Hello!
   </button>
 
-  <Carrousel content={posts} client:load class="my-[10rem]">
+  <Carrousel content={posts} speed={3000} client:load class="my-[10rem]">
     <div
       class="w-full h-full flex flex-col justify-center items-center border-2 border-dashed border-emerald-400/80 rounded-md"
     >
+    <!-- This is displayed last and contain any content as long as it fits in
+        the parent element, same as images and video -->
       <a href="/Totally-Not-a-Bunch-of-Cats/blog/" class="w-fit h-fit p-4 text-center">
         <span class="font-bold text-2xl">+</span>
         <p class="font-bold text-xl">More posts</p>
