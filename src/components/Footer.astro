@@ -2,15 +2,11 @@
 import Socials from "@component/Socials.astro";
 import Links from "@component/Links.astro";
 import { uri } from "@script/utils";
+import { menu } from "@script/constants";
+
 const today = new Date();
 
 const {host, protocol} = Astro.url;
-let menu: any = await fetch(`${protocol}//${host}${uri('api/menu.json')}`);
-menu = await menu.json();
-console.log(menu);
-for (const [key, _] of Object.entries(menu)) {
-    menu[key].uri = uri(menu[key].uri ?? '');
-}
 ---
 
 <footer class="px-1">

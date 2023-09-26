@@ -1,19 +1,16 @@
 import { HeaderLink } from "./HeaderLink";
-import { createEffect, createResource, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
 import { uri } from "../../../scripts/utils.ts";
+import { menu as links } from "@script/constants.ts";
 
 type Props = { url: URL };
-
-const fetchLinks = async(url: URL) => {
-    return (await fetch(`${url.protocol}//${url.host}${uri('api/menu.json')}`)).json();
-}
 
 export const Header = (props: Props) => {
   let openButton: HTMLElement;
   let closeButton: HTMLElement;
   const [menu, setMenu] = createSignal(false);
-  const [links] = createResource(props.url, fetchLinks)
+  
 
   const closeMenu = () => {
     setMenu(false);
@@ -99,8 +96,8 @@ export const Header = (props: Props) => {
           <div className="w-full h-full flex flex-col justify-center items-center">
             <em className="text-slate-700/40 text-3xl font-bold">Menu</em>
             <ul className="mt-2 text-lg list-disc list-inside">
-                { links() &&
-                    Object.entries(links()).map(([name, info]) => (
+                { links &&
+                    Object.entries(links).map(([name, info]) => (
                         <li>
                             <HeaderLink href={uri(info.uri)} pathname={props.url.pathname} class="h-fit">
                                 {name}

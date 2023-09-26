@@ -6,11 +6,9 @@ import Card from "@component/team/Card.astro";
 import { uri } from "@script/utils";
 import { splitProps } from "solid-js";
 import { type TeamMember } from "../api/team.json";
+import { team } from "@script/constants";
 
 const { host, protocol } = Astro.url;
-let team: TeamMember = await (
-  await fetch(`${protocol}//${host}${uri(`api/team.json`)}`)
-).json();
 ---
 
 <Layout>
