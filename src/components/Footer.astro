@@ -9,7 +9,6 @@ let menu: any = await (await fetch(`${protocol}//${host}${uri('api/menu.json')}`
 for (const key in menu) {
     menu[key].uri = uri(menu[key].uri);
 }
-console.log(menu);
 ---
 
 <footer class="px-1">

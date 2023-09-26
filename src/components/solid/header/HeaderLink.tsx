@@ -9,7 +9,7 @@ export const HeaderLink = ({
   children,
   ...props
 }: Props) => {
-  const isActive = href === pathname || href === pathname.replace(/\/$/, "");
+  const isActive = href === pathname || href === pathname?.replace(/\/$/, "");
 
   return (
     <a
