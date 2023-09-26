@@ -15,7 +15,8 @@ type Link = { uri: string; description?: string; extern?: boolean }
 export const menu: {[key: string]: Link} = {
     Home: { uri: uri("/") },
     Blog: { uri: uri("/blog/") },
-    Team: { uri: uri("/team/") }
+    Team: { uri: uri("/team/") },
+    Projects: { uri: uri("/project/") },
 }
 
 export const team: TeamMember = {

@@ -18,7 +18,7 @@ export const CarrouselWrapper = (props: {
 }) => {
   return (
     <div
-      className={`transition-opacity duration-200 absolute top-0 left-0 w-full aspect-video rounded-md ${
+      className={`transition-opacity duration-200 absolute top-0 left-0 w-full h-fit aspect-video rounded-md ${
         props.idx === props.selected
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"
@@ -65,7 +65,8 @@ type Props = HTMLAttributes<"section"> & {
   content: CarrouselContainer[];
   speed?: number;
   "no-arrows"?: boolean;
-  children: HTMLElement | never[];
+  loop?: boolean;
+  children?: HTMLElement | never[];
 };
 
 /**
@@ -89,7 +90,7 @@ export const Carrousel = (props: Props) => {
 
   let lastInterval: NodeJS.Timer;
   createEffect(() => {
-    setHasChildren(data.children.children.length > 0);
+    setHasChildren(data.children !== undefined && data.children.children.length > 0);
   })
 
   // If there is a speed and there is a child node and the child node is the current
@@ -106,9 +107,11 @@ export const Carrousel = (props: Props) => {
   })
 
   const next = () => {
-    setSelected(
-      (selected() + 1) % (data.content.length + (hasChildren() ? 1 : 0))
-    );
+    if (props.loop) {
+        setSelected(
+          (selected() + 1) % (data.content.length + (hasChildren() ? 1 : 0))
+        );
+    }
   };
 
   const previous = () => {

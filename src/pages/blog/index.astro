@@ -26,7 +26,10 @@ const posts = (await getCollection("blog")).sort(
               src={uri(post.data.heroImage ?? '')}
               alt=""
             />
-            <div class="flex justify-between gap-6">
+            <div 
+                class="flex flex-col justify-between gap-x-6"
+                class:list={{"md:flex-row": idx === 0}}
+            >
               <div
                 class="flex-[2]"
                 transition:name={`hero-title-${post.data.title}-date-${post.data.pubDate}`}
@@ -40,7 +43,7 @@ const posts = (await getCollection("blog")).sort(
               
               <div
                class="flex flex-wrap flex-1 gap-1 text-sm w-fit h-fit justify-end"
-               class:list={{'md:hidden': idx !== 0}}
+               
               >
                 {post.data.tags &&
                   post.data.tags.map((tag) => (

@@ -6,6 +6,6 @@ class Error {
     }
 }
 
-export function uri(path: string) {
+export function uri(path: string): string {
     return `/Totally-Not-a-Bunch-of-Cats/${path ? path?.replace(/^\//, '') : path}`;
 }

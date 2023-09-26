@@ -10,9 +10,14 @@ type PlaybackAttributes = {
   loop?: boolean;
   start?: number;
   autoNext?: boolean;
+  alwaysRestart?: boolean;
+  controls?: boolean,
+  volume?: number,
 };
 export type ImageAttributes = Omit<HTMLAttributes<"img">, "class:list">;
-export type VideoAttributes = HTMLAttributes<"source"> & PlaybackAttributes;
+export type VideoAttributes = HTMLAttributes<"source"> & PlaybackAttributes & {
+    poster?: string
+};
 export type IFrameAttributes = Omit<HTMLAttributes<"iframe">, 'src'> & PlaybackAttributes & {
     videoId: string
 };
