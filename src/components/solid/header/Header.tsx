@@ -99,7 +99,7 @@ export const Header = (props: Props) => {
                 { links &&
                     Object.entries(links).map(([name, info]) => (
                         <li>
-                            <HeaderLink href={uri(info.uri)} pathname={props.url.pathname} class="h-fit">
+                            <HeaderLink href={info.uri} pathname={props.url.pathname} class="h-fit">
                                 {name}
                             </HeaderLink>
                         </li>
