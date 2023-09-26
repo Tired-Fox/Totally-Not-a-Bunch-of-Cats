@@ -1,15 +1,26 @@
 import { HeaderLink } from "./HeaderLink";
-// import { Toaster } from "../toaster/Toaster";
-import { createSignal } from "solid-js";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
 import { uri } from "../../../scripts/utils.ts";
 
-type Props = { pathname: string };
+type Props = { url: URL, links: {[key: string]: object} };
 
-export const Header = ({ pathname }: Props) => {
+const fetchLinks = async(url: URL) => {
+    return (await fetch(`${url.protocol}//${url.host}${uri('api/menu.json')}`)).json();
+}
+
+export const Header = (props: Props) => {
   let openButton: HTMLElement;
   let closeButton: HTMLElement;
   const [menu, setMenu] = createSignal(false);
+  const [links] = createResource(props.url, fetchLinks)
+
+  createEffect(() => {
+    if (links()) {
+        console.log(Object.entries(links()));
+    }
+  })
+
 
   const closeMenu = () => {
     setMenu(false);
@@ -95,16 +106,15 @@ export const Header = ({ pathname }: Props) => {
           <div className="w-full h-full flex flex-col justify-center items-center">
             <em className="text-slate-700/40 text-3xl font-bold">Menu</em>
             <ul className="mt-2 text-lg list-disc list-inside">
-              <li>
-                <HeaderLink href={uri('/')} pathname={pathname} class="h-fit">
-                  Home
-                </HeaderLink>
-              </li>
-              <li>
-                <HeaderLink href={uri('/blog/')} pathname={pathname} class="h-fit">
-                  Blog
-                </HeaderLink>
-              </li>
+                { links() &&
+                    Object.entries(links()).map(([name, info]) => (
+                        <li>
+                            <HeaderLink href={info.uri} pathname={props.url.pathname} class="h-fit">
+                                {name}
+                            </HeaderLink>
+                        </li>
+                    ))
+                }
             </ul>
           </div>
         </nav>

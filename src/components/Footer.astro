@@ -3,6 +3,11 @@ import Socials from "@component/Socials.astro";
 import Links from "@component/Links.astro";
 import { uri } from "@script/utils";
 const today = new Date();
+
+const {host, protocol} = Astro.url;
+let menu: any = await fetch(`${protocol}//${host}${uri('api/menu.json')}`);
+menu = await menu.json();
+console.log(menu);
 ---
 
 <footer class="px-1">
@@ -25,10 +30,7 @@ const today = new Date();
       >
         <Links
           name="Menu"
-          links={{
-            blog: { uri: uri('/blog/') },
-            team: { uri: uri('/team/') }
-          }}
+          links={menu}
         />
         <Links
           name="Support"

@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "astro/types";
 
-type Props = HTMLAttributes<"a"> & { pathname: string };
+type Props = HTMLAttributes<"a"> & { pathname: string, children: any };
 
 export const HeaderLink = ({
   href,
