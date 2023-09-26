@@ -1,29 +1,28 @@
 import { HeaderLink } from "./HeaderLink";
 import { createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
-import { uri } from "../../../scripts/utils.ts";
-import { menu as links } from "@script/constants.ts";
+import { menu } from "@script/constants.ts";
 
 type Props = { url: URL };
 
 export const Header = (props: Props) => {
   let openButton: HTMLElement;
   let closeButton: HTMLElement;
-  const [menu, setMenu] = createSignal(false);
+  const [open, setOpen] = createSignal(false);
   
 
   const closeMenu = () => {
-    setMenu(false);
+    setOpen(false);
     openButton.focus();
     document.body.classList.remove('overflow-y-hidden');
   };
   const openMenu = () => {
-    setMenu(true);
+    setOpen(true);
     closeButton.focus();
     document.body.classList.add('overflow-y-hidden');
   };
   const toggleMenu = () => {
-    if (menu()) {
+    if (open()) {
         closeMenu();
     } else {
         openMenu()
@@ -31,7 +30,7 @@ export const Header = (props: Props) => {
   };
 
   document.addEventListener('keyup', (e) => {
-    if (e.key === 'Escape' && menu()) {
+    if (e.key === 'Escape' && open()) {
         closeMenu();
     }
   });
@@ -65,12 +64,12 @@ export const Header = (props: Props) => {
 
       <div
         className={`absolute top-0 left-0 w-full h-screen flex justify-end z-40 ${
-          menu() ? "bg-slate-700/20 backdrop-blur-2xl pointer-events-auto" : "pointer-events-none"
+          open() ? "bg-slate-700/20 backdrop-blur-2xl pointer-events-auto" : "pointer-events-none"
         }`}
       >
         <nav
           id="header-nav"
-          className={`transition-transform linear duration-200 w-screen md:w-[20rem] h-screen bg-slate-100 md:rounded-l-lg shadow-lg shadow-slate-800 border-y-2 border-l-2 border-dashed border-slate-400 overflow-hidden flex flex-col items-end backdrop-blur-md backdrop-brightness-150 ${menu() ? "" : "translate-x-[100vw] border-transparent scale-x-0"}`}
+          className={`transition-transform linear duration-200 w-screen md:w-[20rem] h-screen bg-slate-100 md:rounded-l-lg shadow-lg shadow-slate-800 border-y-2 border-l-2 border-dashed border-slate-400 overflow-hidden flex flex-col items-end backdrop-blur-md backdrop-brightness-150 ${open() ? "" : "translate-x-[100vw] border-transparent scale-x-0"}`}
         >
           <div className="w-12 h-12 mt-4 mr-1">
             <button
@@ -96,8 +95,8 @@ export const Header = (props: Props) => {
           <div className="w-full h-full flex flex-col justify-center items-center">
             <em className="text-slate-700/40 text-3xl font-bold">Menu</em>
             <ul className="mt-2 text-lg list-disc list-inside">
-                { links &&
-                    Object.entries(links).map(([name, info]) => (
+                { menu &&
+                    Object.entries(menu).map(([name, info]) => (
                         <li>
                             <HeaderLink href={info.uri} pathname={props.url.pathname} class="h-fit">
                                 {name}
