@@ -9,10 +9,11 @@ type Props = {
   description?: string;
   image?: string;
   centered?: boolean;
+  "max-width"?: string;
 };
 
 const url = Astro.url;
-const { title, description, image, centered = false } = Astro.props;
+const { title, description, image, centered = false, "max-width": maxWidth ="90ch" } = Astro.props;
 ---
 
 <!doctype html>
@@ -29,8 +30,8 @@ const { title, description, image, centered = false } = Astro.props;
       <Header url={url} client:only />
     </span>
     <main
-      class="w-[90%] max-w-[90ch] min-h-[calc(100dvh-2.75rem)] mx-auto"
-      class:list={centered ? "flex flex-col items-center justify-center" : ""}
+      class="w-[90%] min-h-[calc(100dvh-2.75rem)] mx-auto"
+      class:list={[`max-w-[${maxWidth}]`, centered ? "flex flex-col items-center justify-center" : ""]}
       transition:name="main"
       transition:animate="fade"
     >

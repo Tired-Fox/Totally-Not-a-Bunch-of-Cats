@@ -36,7 +36,7 @@ export const Header = (props: Props) => {
   });
 
   return (
-    <header className="ml-auto w-fit z-40">
+    <header className="w-full z-40">
       <div className="w-full max-w-[120ch] mx-auto flex justify-end">
         <div className="mt-2 mr-3 w-12 h-12 bg-slate-100 rounded-full shadow-md border-2 border-dashed border-slate-300  pointer-events-auto">
           <button
