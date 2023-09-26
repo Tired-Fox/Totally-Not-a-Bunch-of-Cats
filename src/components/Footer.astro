@@ -5,8 +5,10 @@ import { uri } from "@script/utils";
 const today = new Date();
 
 const {host, protocol} = Astro.url;
-let menu: any = await fetch(`${protocol}//${host}${uri('api/menu.json')}`);
-menu = await menu.json();
+let menu: any = await (await fetch(`${protocol}//${host}${uri('api/menu.json')}`)).json();
+for (const key in menu) {
+    menu[key].uri = uri(menu[key].uri);
+}
 console.log(menu);
 ---
 
