@@ -3,7 +3,7 @@ import { createEffect, createResource, createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
 import { uri } from "../../../scripts/utils.ts";
 
-type Props = { url: URL, links: {[key: string]: object} };
+type Props = { pathname: string };
 
 const fetchLinks = async(url: URL) => {
     return (await fetch(`${url.protocol}//${url.host}${uri('api/menu.json')}`)).json();
@@ -109,7 +109,7 @@ export const Header = (props: Props) => {
                 { links() &&
                     Object.entries(links()).map(([name, info]) => (
                         <li>
-                            <HeaderLink href={info.uri} pathname={props.url.pathname} class="h-fit">
+                            <HeaderLink href={info.uri} pathname={props.pathname} class="h-fit">
                                 {name}
                             </HeaderLink>
                         </li>
