@@ -8,7 +8,7 @@ class Error {
 
 export function uri(path: string) {
     if (!path) {
-        throw new Error("uri helper function expects a path");
+        throw new Error(`uri helper function expects a path: ${path}`);
     }
     return `/Totally-Not-a-Bunch-of-Cats/${path?.replace(/^\//, '')}`;
 }

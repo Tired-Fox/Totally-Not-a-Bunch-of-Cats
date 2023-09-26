@@ -40,9 +40,9 @@ export const Header = (props: Props) => {
   });
 
   return (
-    <header className="w-full z-40">
+    <header className="ml-auto w-fit z-40">
       <div className="w-full max-w-[120ch] mx-auto flex justify-end">
-        <div className="mt-2 mr-3 w-12 h-12 bg-slate-100 rounded-full shadow-md border-2 border-dashed border-slate-300">
+        <div className="mt-2 mr-3 w-12 h-12 bg-slate-100 rounded-full shadow-md border-2 border-dashed border-slate-300  pointer-events-auto">
           <button
             type="button"
             ref={openButton}
@@ -102,7 +102,7 @@ export const Header = (props: Props) => {
                 { links() &&
                     Object.entries(links()).map(([name, info]) => (
                         <li>
-                            <HeaderLink href={info.uri} pathname={props.url.pathname} class="h-fit">
+                            <HeaderLink href={uri(info.uri)} pathname={props.url.pathname} class="h-fit">
                                 {name}
                             </HeaderLink>
                         </li>

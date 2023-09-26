@@ -25,7 +25,7 @@ const { title, description, image, centered = false } = Astro.props;
     class="flex flex-col min-h-[100vh] min-h-[100dvh] text-slate-800 overflow-x-hidden"
     transition:animate="none"
   >
-    <span class="sticky top-0 left-0 z-40" transition:animate="none">
+    <span class="sticky top-0 left-0 z-40 pointer-events-none" transition:animate="none">
       <Header url={url} client:only />
     </span>
     <main
