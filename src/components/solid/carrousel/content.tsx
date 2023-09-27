@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount, splitProps } from "solid-js";
+import { createEffect, splitProps } from "solid-js";
 
 import { YoutubePlayer, STATE, ERROR } from "../yt-player";
 import type { YTEvent, YTPlayer } from "../yt-player/types";
@@ -59,9 +59,17 @@ const CarrouselVideo = (props: {
     let video: HTMLVideoElement;
     let [attrs, style, rest] = splitProps(
         props.attrs,
-        ["autoNext", "loop", "start", "volume", "controls", "poster"],
+        ["autoNext", "loop", "start", "volume", "controls", "poster", "alwaysRestart"],
         ["class"]
     );
+
+    createEffect(() => {
+        video?.addEventListener("loadeddata", () => {
+            if (attrs.start !== undefined) {  
+                video.currentTime = attrs.start as number;
+            }
+        })
+    })
 
     let onEnd = () => {
         if (attrs.autoNext) {
@@ -70,21 +78,15 @@ const CarrouselVideo = (props: {
             props.next();
         }
     };
-    createEffect(() => {
-        if (attrs.start !== undefined) {
-            video?.addEventListener("loadeddata", () => {
-                video.currentTime = attrs.start as number;
-            });
-            video?.addEventListener("loadedmetadata", () => {
-                video.currentTime = attrs.start as number;
-            });
-        }
-    });
+
     createEffect(() => {
         if (props.metadata.active) {
             video.play();
         } else {
             video.pause();
+            if (attrs.alwaysRestart) {
+                video.currentTime = attrs.start ?? 0;
+            }
         }
     });
 
@@ -127,7 +129,6 @@ const CarrouselYoutube = (props: {
     metadata: MetaData;
     next: () => void;
 }) => {
-    const [firstPlay, setFirstPlay] = createSignal(false);
     let iframe: HTMLIFrameElement;
     let [attrs, _, rest] = splitProps(
         props.attrs,
@@ -250,7 +251,7 @@ export const CarrouselContent = (props: {
             href={props.content.anchor.href}
             target={props.content.anchor.target}
             title={props.content.anchor.label as string}
-            className="relative rounded-md"
+            className="relative rounded-md w-full h-full"
         >
             {props.content.anchor.label && (
                 <span className="w-full h-full absolute top-0 left-0 flex justify-center items-center z-10 rounded-md">

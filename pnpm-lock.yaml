@@ -8,6 +8,7 @@ specifiers:
   '@astrojs/sitemap': ^3.0.0
   '@astrojs/solid-js': ^3.0.1
   '@astrojs/tailwind': ^5.0.0
+  '@iconify-icon/solid': ^1.0.8
   '@solid-aria/primitives': ^0.4.0
   '@tailwindcss/typography': ^0.5.10
   '@types/react-dom': ^18.2.7
@@ -28,6 +29,7 @@ dependencies:
   '@astrojs/sitemap': 3.0.0
   '@astrojs/solid-js': 3.0.1_solid-js@1.7.12
   '@astrojs/tailwind': 5.0.0_6r4ndf7eo3jhejo5tqeu7udvwy
+  '@iconify-icon/solid': 1.0.8_solid-js@1.7.12
   '@solid-aria/primitives': 0.4.0_solid-js@1.7.12
   astro: 3.1.4
   astro-icon: 0.8.1
@@ -996,6 +998,19 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@iconify-icon/solid/1.0.8_solid-js@1.7.12:
+    resolution: {integrity: sha512-2H4y4f9wOQ0qzAti4dFo84OhU6A9kkmDOqsWX0zAbl2vhQvGylMva6U9/TYwrQUH2N71xje9gqQCb3lfbpfwpw==}
+    peerDependencies:
+      solid-js: '>=1'
+    dependencies:
+      iconify-icon: 1.0.8
+      solid-js: 1.7.12
+    dev: false
+
+  /@iconify/types/2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: false
 
   /@internationalized/number/3.2.1:
     resolution: {integrity: sha512-hK30sfBlmB1aIe3/OwAPg9Ey0DjjXvHEiGVhNaOiBJl31G0B6wMaX8BN3ibzdlpyRNE9p7X+3EBONmxtJO9Yfg==}
@@ -2944,6 +2959,12 @@ packages:
   /human-signals/5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
+    dev: false
+
+  /iconify-icon/1.0.8:
+    resolution: {integrity: sha512-jvbUKHXf8EnGGArmhlP2IG8VqQLFFyTvTqb9LVL2TKTh7/eCCD1o2HHE9thpbJJb6B8hzhcFb6rOKhvo7reNKA==}
+    dependencies:
+      '@iconify/types': 2.0.0
     dev: false
 
   /iconv-lite/0.4.24:

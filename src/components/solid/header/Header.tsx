@@ -14,12 +14,12 @@ export const Header = (props: Props) => {
   const closeMenu = () => {
     setOpen(false);
     openButton.focus();
-    document.body.classList.remove('overflow-y-hidden');
+    // document.body.classList.remove('overflow-y-hidden');
   };
   const openMenu = () => {
     setOpen(true);
     closeButton.focus();
-    document.body.classList.add('overflow-y-hidden');
+    // document.body.classList.add('overflow-y-hidden');
   };
   const toggleMenu = () => {
     if (open()) {
@@ -66,10 +66,12 @@ export const Header = (props: Props) => {
         className={`absolute top-0 left-0 w-full h-screen flex justify-end z-40 ${
           open() ? "bg-slate-700/20 backdrop-blur-2xl pointer-events-auto" : "pointer-events-none"
         }`}
+        onClick={toggleMenu}
       >
         <nav
           id="header-nav"
           className={`transition-transform linear duration-200 w-screen md:w-[20rem] h-screen bg-slate-100 md:rounded-l-lg shadow-lg shadow-slate-800 border-y-2 border-l-2 border-dashed border-slate-400 overflow-hidden flex flex-col items-end backdrop-blur-md backdrop-brightness-150 ${open() ? "" : "translate-x-[100vw] border-transparent scale-x-0"}`}
+          onClick={e => e.stopPropagation()}
         >
           <div className="w-12 h-12 mt-4 mr-1">
             <button

@@ -82,7 +82,7 @@ export type YTPlayer = {
   playVideoAt(index: number): void;
   mute(): void;
   unMute(): void;
-  isMuted(): Promise<boolean>;
+  isMuted(): boolean;
   setVolume(volume: number): void;
   getVolume(): number;
   setSize(width: number, height: number): Object;

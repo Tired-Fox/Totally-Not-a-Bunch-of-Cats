@@ -1,33 +1,13 @@
 ---
 import Layout from "@layout/Layout.astro";
 
-import Binder from "@component/team/Binder.astro";
-import Card from "@component/team/Card.astro";
-import { uri } from "@script/utils";
-import { splitProps } from "solid-js";
-import { type TeamMember } from "../api/team.json";
-import { team } from "@script/constants";
-
-const { host, protocol } = Astro.url;
+// import Binder from "@component/team/Binder.astro";
+// import Card from "@component/team/Card.astro";
+import { Binder } from '@solid/team';
+const url = Astro.url;
 ---
 
-<Layout max-width="105ch">
+<Layout maxWidth="105ch">
   <h1 class="text-3xl font-bold">Meet the Team</h1>
-  <Binder class="my-4 gap-10">
-    {
-      team &&
-        Object.entries(team).map(([tag, info], idx) => {
-          const [data, rest] = splitProps(info, ["content"]);
-          return (
-            <Card
-              tag={tag}
-              direction={idx % 2 === 0 ? "left" : "right"}
-              {...rest}
-            >
-              {data.content}
-            </Card>
-          );
-        })
-    }
-  </Binder>
+  <Binder class="my-4 gap-10" url={url} client:load />
 </Layout>

@@ -23,6 +23,7 @@ const project = defineCollection({
         releaseDate: z.coerce.date().optional(),
         trailer: z.string().optional(),
         tags: z.array(z.string()).optional(),
+        platforms: z.array(z.string()).optional()
     }),
 });
 
