@@ -55,16 +55,9 @@ export function Projects(props: Props) {
   // onChange={(e) => setGroupBy(e.target.value)}
   return (
     <div className="my-4">
-      {/* <div className="mb-4">
-        <input
-          type="text"
-          placeholder="search"
-          className="placeholder:text-slate-300/70 py-1 px-2 rounded-md outline-none focus:ring-2 ring-slate-300 ring-offset-1 border-2 border-dashed border-slate-700/30 w-[25%] focus:w-[50%] transition-[width] duration-200 text-sm"
-        />
-      </div> */}
       <div className="flex gap-6 flex-wrap">
         {props.posts.map((post) => {
-          console.log(post);
+          //   console.log(post);
           return (
             <a
               href={uri(`${post.collection}/${post.slug}`)}
@@ -74,7 +67,7 @@ export function Projects(props: Props) {
                 {post.data.title}
               </div>
               <img
-                src={uri(post.data.heroImage)}
+                src={uri(post.data.coverImage)}
                 className="w-full h-full"
               />
             </a>

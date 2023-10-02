@@ -110,7 +110,7 @@ export const Header = (props: Props) => {
           </div>
         </nav>
       </div>
-      <Toaster position="bottom-left" gutter={8} />
+      {/* <Toaster position="bottom-left" gutter={8} /> */}
     </header>
   );
 };

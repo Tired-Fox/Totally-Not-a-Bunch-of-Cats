@@ -30,7 +30,7 @@ const { title, description, image, centered = false, larger=false } = Astro.prop
       <Header url={url} client:only />
     </span>
     <main
-      class={`w-[90%] min-h-[calc(100dvh-2.75rem)] mx-auto ${larger ? 'max-w-[115ch]': 'max-w-[90ch]'} ${centered ? "flex flex-col items-center justify-center" : ""}`}
+      class={`mb-[3rem] w-[90%] min-h-[calc(100dvh-2.75rem)] mx-auto ${larger ? 'max-w-[115ch]': 'max-w-[90ch]'} ${centered ? "flex flex-col items-center justify-center" : ""}`}
       transition:name="main"
       transition:animate="fade"
     >

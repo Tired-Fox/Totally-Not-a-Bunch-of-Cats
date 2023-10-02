@@ -19,6 +19,7 @@ const project = defineCollection({
         title: z.string(),
         description: z.string(),
         heroImage: z.string(),
+        coverImage: z.string(),
 		// Transform string to Date object
         releaseDate: z.coerce.date().optional(),
         trailer: z.string().optional(),
