@@ -72,7 +72,13 @@ if (project_posts.length > 5) {
           <h2 class="text-2xl">More about us</h2>
       </section>
 
-      <Carrousel content={project_posts} client:load full class="my-[15rem]"/>
+      <Carrousel
+        class="my-[15rem]"
+        content={project_posts}
+        full
+        transition:animate="none"
+        client:load
+      />
 
       <section>
           <h2 class="text-2xl">Annoucements</h2>
