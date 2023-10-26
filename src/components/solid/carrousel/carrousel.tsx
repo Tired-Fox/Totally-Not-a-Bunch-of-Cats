@@ -5,16 +5,18 @@ https://developers.google.com/youtube/iframe_api_reference
 export { image, video } from "./core";
 import '../../../styles/custom.css';
 
-import { createSignal, type Accessor, Show, splitProps, createEffect } from "solid-js";
+import { createSignal, type Accessor, Show, splitProps, createEffect, For, type Component, type JSX } from "solid-js";
 
-import { CarrouselContainer, type MetaData } from "./types";
+import { CarrouselContainer } from "./types";
 import { CarrouselContent } from "./content";
-import type { HTMLAttributes } from "astro/types";
+
+export const aspect = 'aspect-[8/3]';
 
 type CarrouselWrapperProps = {
     idx: number,
     selected: number;
-    children: HTMLElement;
+    children: JSX.Element;
+    aspect: string;
 };
 
 type CarrouselButtonProps = {
@@ -22,20 +24,23 @@ type CarrouselButtonProps = {
     idx: number;
     selected: number;
     title?: string;
+    "select-color": string;
+    "unselect-color": string;
 };
 
-type CarrouselProps = HTMLAttributes<"section"> & {
+type CarrouselProps = Omit<JSX.HTMLAttributes<HTMLElement>, 'children'> & {
     content: CarrouselContainer[];
     speed?: number;
     "no-arrows"?: boolean;
     wrap?: boolean;
-    children?: HTMLElement | never[];
+    full?: boolean;
+    children?: Element;
 };
 
-export const CarrouselWrapper = (props: CarrouselWrapperProps) => {
+export const CarrouselWrapper: Component<CarrouselWrapperProps> = (props) => {
     return (
         <div
-            className={`transition-opacity duration-200 absolute top-0 left-0 w-full h-fit aspect-video rounded-md ${props.idx === props.selected
+            class={`transition-opacity duration-200 absolute top-0 left-0 w-full h-fit ${props.aspect} ${props.idx === props.selected
                     ? "opacity-100 pointer-events-auto"
                     : "opacity-0 pointer-events-none"
                 }`}
@@ -45,16 +50,17 @@ export const CarrouselWrapper = (props: CarrouselWrapperProps) => {
     );
 };
 
-export const CarrouselButton = (props: CarrouselButtonProps) => {
+export const CarrouselButton: Component<CarrouselButtonProps> = (props) => {
     return (
         <button
             type="button"
-            className={`rounded-full h-2 text-transparent transition-[width] duration-200 leading-[0] ${props.idx === props.selected
-                    ? "w-[60%] bg-slate-500"
-                    : "w-[1rem] bg-slate-500/30"
-                }`}
+            class={
+                `rounded-full h-[.4rem] text-transparent transition-[width] duration-200 leading-[0] w-[2rem]
+                    ${props.idx === props.selected ? ` ${props['select-color']}` : ` ${props['unselect-color']}`}
+                `
+            }
             onClick={props.select}
-            title={props.title || "" + (props.idx + 1)}
+            title={`${props.title} (Slide ${props.idx+1})`}
         >
             -
         </button>
@@ -71,15 +77,26 @@ export const CarrouselButton = (props: CarrouselButtonProps) => {
  * @param {?boolean} no-arrow Hide the carrousel arrows
  * @param {?HTMLElement} children The single element to display at the end of the carrousel
  */
-export function Carrousel(props: CarrouselProps) {
-    let wrapper: HTMLDivElement;
+export const Carrousel: Component<CarrouselProps> = (props) => {
+    let wrapper: HTMLDivElement | undefined = undefined;
     const [selected, setSelected] = createSignal(0);
     const [hasChildren, setHasChildren] = createSignal(false);
     const [data, style, rest] = splitProps(
         props,
         ["content", "children"],
-        ["class"]
+        ["class", "full"]
     );
+
+    let scolor = 'bg-slate-500', ucolor = 'bg-slate-500/30';
+    if (props.full) {
+        scolor = 'bg-slate-400';
+        ucolor='bg-slate-400/40';
+    } else {
+        scolor = 'bg-slate-500';
+        ucolor = 'bg-slate-500/30';
+    }
+    console.log(props.full, scolor, ucolor);
+    
 
     let lastInterval: NodeJS.Timer;
     createEffect(() => {
@@ -116,14 +133,15 @@ export function Carrousel(props: CarrouselProps) {
     };
 
     return (
-        <section className={`${style.class} w-full my-2 hover-arrows`} {...rest}>
+        <section class={`${style.full ? '':`my-2 mx-auto`} w-full hover-arrows relative`} {...rest}>
             <div
                 ref={wrapper}
-                className="w-full relative shadow-md shadow-slate-700/30 rounded-md overflow-x-hidden"
+                class={`w-full relative overflow-x-hidden ${props.full ? '':'shadow-md shadow-slate-700/30 rounded-md max-w-[90ch]'} ${style.class}`}
             >
                 {!props["no-arrows"] && (
                     <button
-                        className="carrousel-arrow transition-opacity opacity-0 duration-100 absolute top-[50%] left-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
+                        type="button"
+                        class="carrousel-arrow transition-opacity opacity-0 duration-100 absolute top-[50%] left-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
                         onClick={previous}
                     >
                         <svg
@@ -132,7 +150,7 @@ export function Carrousel(props: CarrouselProps) {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
+                            class="w-6 h-6"
                         >
                             <path
                                 stroke-linecap="round"
@@ -142,10 +160,10 @@ export function Carrousel(props: CarrouselProps) {
                         </svg>
                     </button>
                 )}
-                <div className="w-full aspect-video"></div>
+                <div class={`w-full ${props.full ? `${aspect}`: 'aspect-video max-w-[90ch]'}`}></div>
                 <For each={data.content}>
                     {(content: CarrouselContainer, idx: Accessor<number>) => (
-                        <CarrouselWrapper idx={idx()} selected={selected()}>
+                        <CarrouselWrapper idx={idx()} selected={selected()} aspect={props.full ? aspect: 'aspect-video'}>
                             <CarrouselContent
                                 content={content}
                                 metadata={{
@@ -165,14 +183,15 @@ export function Carrousel(props: CarrouselProps) {
                     )}
                 </For>
                 <Show when={hasChildren()}>
-                    <CarrouselWrapper idx={data.content.length} selected={selected()}>
+                    <CarrouselWrapper idx={data.content.length} selected={selected()} aspect={props.full ? aspect: 'aspect-video'}>
                         {data.children}
                     </CarrouselWrapper>
                 </Show>
 
                 {!props["no-arrows"] && (
                     <button
-                        className="carrousel-arrow transition-opacity duration-100 opacity-0 absolute top-[50%] right-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
+                        type="button"
+                        class="carrousel-arrow transition-opacity duration-100 opacity-0 absolute top-[50%] right-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
                         onClick={next}
                     >
                         <svg
@@ -181,7 +200,7 @@ export function Carrousel(props: CarrouselProps) {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
+                            class="w-6 h-6"
                         >
                             <path
                                 stroke-linecap="round"
@@ -192,7 +211,7 @@ export function Carrousel(props: CarrouselProps) {
                     </button>
                 )}
             </div>
-            <div className="flex w-full gap-1 px-6 mt-2 justify-center items-center">
+            <div class={`${style.full ? 'absolute bottom-0 left-0 mb-6 z-50': 'px-6 mt-2'} flex w-full gap-1 justify-center items-center`}>
                 <For each={data.content}>
                     {(cnt: CarrouselContainer, idx: Accessor<number>) => (
                         <CarrouselButton
@@ -200,16 +219,18 @@ export function Carrousel(props: CarrouselProps) {
                             selected={selected()}
                             select={() => setSelected(idx())}
                             title={cnt.anchor.label}
+                            select-color={scolor}
+                            unselect-color={ucolor}
                         />
                     )}
                 </For>
                 <Show when={hasChildren()}>
                     <button
                         type="button"
-                        className={`rounded-full text-transparent transition-[width] duration-200 leading-[0] w-4 h-4 font-bold leading-none flex justify-center items-center ml-1 ${data.content.length === selected()
-                                ? "bg-slate-500 text-slate-200"
-                                : "bg-slate-500/30 text-slate-950"
-                            }`}
+                        class={
+                            `rounded-full text-transparent transition-[width] duration-200 w-4 h-4 font-bold leading-none flex justify-center items-center ml-1 
+                                ${data.content.length === selected() ? `${scolor}` : `${ucolor}`}
+                            `}
                         onClick={() => {
                             if (data.content.length !== selected()) {
                                 setSelected(data.content.length);

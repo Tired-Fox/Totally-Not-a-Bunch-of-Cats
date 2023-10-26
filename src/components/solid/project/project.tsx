@@ -1,4 +1,4 @@
-import { toTitleCase, uri } from "@script/utils";
+import { uri } from "@script/utils";
 import type { CollectionEntry } from "astro:content";
 import { createEffect, createSignal } from "solid-js";
 import "@style/animations.css";
@@ -54,21 +54,21 @@ export function Projects(props: Props) {
   });
   // onChange={(e) => setGroupBy(e.target.value)}
   return (
-    <div className="my-4">
-      <div className="flex gap-6 flex-wrap">
+    <div class="my-4">
+      <div class="flex gap-6 flex-wrap">
         {props.posts.map((post) => {
           //   console.log(post);
           return (
             <a
               href={uri(`${post.collection}/${post.slug}`)}
-              className="relative aspect-[5/8] w-[10rem] border border-solid borrder-black rounded-md overflow-hidden shadow-sm shadow-slate-700/60 hover:ring-2 ring-slate-300 ring-offset-1"
+              class="relative aspect-[5/8] w-[10rem] border border-solid borrder-black rounded-md overflow-hidden shadow-sm shadow-slate-700/60 hover:ring-2 ring-slate-300 ring-offset-1"
             >
-              <div className="w-full h-full absolute top-0 left-0 backdrop-blur-[3px] bg-slate-700/5 z-10 text-white flex items-end justify-center py-[25%] font-bold tracking-wide">
+              <div class="w-full h-full absolute top-0 left-0 backdrop-blur-[3px] bg-slate-700/5 z-10 text-white flex items-end justify-center py-[25%] font-bold tracking-wide">
                 {post.data.title}
               </div>
               <img
                 src={uri(post.data.coverImage)}
-                className="w-full h-full"
+                class="w-full h-full"
               />
             </a>
           );

@@ -1,5 +1,5 @@
 ---
-import { uri } from "@script/utils";
+import { Image } from "astro:assets";
 import CardSocial from "./CardSocial.astro";
 type Props = {
   img: string;
@@ -15,9 +15,11 @@ const { img='', tag='', titles=[], personal, socials, direction='left' } = Astro
 
 <div class={`w-full p-4 flex items-center flex-col ${direction === 'left' ? "md:flex-row": "md:flex-row-reverse"}`}>
   <div class={`mb-4`}>
-    <img
+    <Image
       class={`w-[25rem] rounded-md shadow-sm ${"ml-auto"}`}
       src={img}
+      width="1280"
+      height="720"
       alt={`${tag} Profile Picture`}
     />
     {

@@ -10,10 +10,11 @@ type Props = {
   image?: string;
   centered?: boolean;
   larger?: boolean;
+  maxWidth?: boolean;
 };
 
 const url = Astro.url;
-const { title, description, image, centered = false, larger=false } = Astro.props;
+const { title, description, image, centered = false, larger=false, maxWidth=true } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,7 +31,7 @@ const { title, description, image, centered = false, larger=false } = Astro.prop
       <Header url={url} client:only />
     </span>
     <main
-      class={`mb-[3rem] w-[90%] min-h-[calc(100dvh-2.75rem)] mx-auto ${larger ? 'max-w-[115ch]': 'max-w-[90ch]'} ${centered ? "flex flex-col items-center justify-center" : ""}`}
+      class={`mb-[3rem] w-[100%] min-h-[calc(100dvh-2.75rem)] mx-auto ${maxWidth ? larger ? 'max-w-[115ch]': 'max-w-[90ch]':''} ${centered ? "flex flex-col items-center justify-center" : ""}`}
       transition:name="main"
       transition:animate="fade"
     >

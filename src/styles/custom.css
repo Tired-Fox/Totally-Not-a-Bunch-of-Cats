@@ -18,3 +18,13 @@ dialog::backdrop {
   background-color: black;
   clip-path: polygon(100% 0%, 0 0%, 50% 100%);
 }
+
+.section {
+    max-width: 90ch;
+    margin-inline: auto;
+    margin-block: 3rem;
+}
+
+.section.larger {
+    max-width: 115ch;
+}

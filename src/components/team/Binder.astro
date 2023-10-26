@@ -3,9 +3,9 @@ type Props = {
     class?: string
 }
 
-const { class: className } = Astro.props; 
+const { class: class } = Astro.props; 
 ---
 
-<section class={`flex flex-wrap w-full h-fit justify-around ${className}`}>
+<section class={`flex flex-wrap w-full h-fit justify-around ${class}`}>
     <slot />
 </section>

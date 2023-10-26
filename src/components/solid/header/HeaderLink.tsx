@@ -1,6 +1,6 @@
-import type { HTMLAttributes } from "astro/types";
+import type { JSX } from "solid-js/jsx-runtime";
 
-type Props = HTMLAttributes<"a"> & { pathname: string, children: any };
+type Props = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & { pathname: string, children: any };
 
 export const HeaderLink = ({
   href,
@@ -14,7 +14,7 @@ export const HeaderLink = ({
   return (
     <a
       href={href as string}
-      className={`${className} inline-block hover:text-blue-300 ${
+      class={`${className} inline-block hover:text-blue-300 ${
         isActive ? "underline font-bold" : ""
       }`}
       {...props}

@@ -1,4 +1,4 @@
-import { createEffect, splitProps } from "solid-js";
+import { createEffect, splitProps, type Component } from "solid-js";
 
 import { YoutubePlayer, STATE, ERROR } from "../yt-player";
 import type { YTEvent, YTPlayer } from "../yt-player/types";
@@ -34,7 +34,7 @@ const CarrouselImage = (props: {
 
     return (
         <img
-            className={`relative rounded-md w-full aspect-video transition-transform m-0 ${style.class}`}
+            class={`relative w-full h-full transition-transform m-0 ${style.class}`}
             {...rest}
         />
     );
@@ -42,8 +42,8 @@ const CarrouselImage = (props: {
 
 const UnsupportedVideo = () => {
     return (
-        <div className="w-full h-full flex justify-center items-center">
-            <p className="text-lg font-bold underline decoration-wavy underline-offset-8 decoration-rose-500">
+        <div class="w-full h-full flex justify-center items-center">
+            <p class="text-lg font-bold underline decoration-wavy underline-offset-8 decoration-rose-500">
                 Video Not Supported
             </p>
         </div>
@@ -56,7 +56,7 @@ const CarrouselVideo = (props: {
     metadata: MetaData;
     next: () => void;
 }) => {
-    let video: HTMLVideoElement;
+    let video: HTMLVideoElement | undefined = undefined;
     let [attrs, style, rest] = splitProps(
         props.attrs,
         ["autoNext", "loop", "start", "volume", "controls", "poster", "alwaysRestart"],
@@ -65,14 +65,14 @@ const CarrouselVideo = (props: {
 
     createEffect(() => {
         video?.addEventListener("loadeddata", () => {
-            if (attrs.start !== undefined) {  
+            if (attrs.start !== undefined && video) {  
                 video.currentTime = attrs.start as number;
             }
         })
     })
 
     let onEnd = () => {
-        if (attrs.autoNext) {
+        if (attrs.autoNext && video) {
             video.currentTime = attrs.start as number;
             video.volume = attrs.volume !== undefined ? attrs.volume / 100 : 0;
             props.next();
@@ -80,9 +80,9 @@ const CarrouselVideo = (props: {
     };
 
     createEffect(() => {
-        if (props.metadata.active) {
+        if (props.metadata.active && video) {
             video.play();
-        } else {
+        } else if (video) {
             video.pause();
             if (attrs.alwaysRestart) {
                 video.currentTime = attrs.start ?? 0;
@@ -91,10 +91,10 @@ const CarrouselVideo = (props: {
     });
 
     let vplayer = (
-        <div className="w-full h-full absolute top-0 left-0 bg-black rounded-md z-10">
+        <div class="w-full h-full absolute top-0 left-0 bg-black z-10">
             <video
                 ref={video}
-                className={`w-full aspect-video m-0 ${style.class}`}
+                class={`w-full aspect-video m-0 ${style.class}`}
                 // 16:9 aspect ratio
                 width={1280}
                 height={720}
@@ -113,7 +113,7 @@ const CarrouselVideo = (props: {
                 <source
                     src={rest.src}
                     type={rest.type}
-                    className="w-full aspect-video pointer-events-auto"
+                    class="w-full aspect-video pointer-events-auto"
                 />
                 <UnsupportedVideo />
             </video>
@@ -129,7 +129,7 @@ const CarrouselYoutube = (props: {
     metadata: MetaData;
     next: () => void;
 }) => {
-    let iframe: HTMLIFrameElement;
+    let iframe: HTMLIFrameElement | undefined = undefined;
     let [attrs, _, rest] = splitProps(
         props.attrs,
         ["autoNext", "loop", "start", "controls", "volume", "alwaysRestart"],
@@ -138,6 +138,10 @@ const CarrouselYoutube = (props: {
 
     let player: YTPlayer;
     createEffect(() => {
+        if (!iframe) {
+            return;
+        }
+
         // This creates a referenced youtube player (iframe).
         player = YoutubePlayer(iframe, {
             // 100% width and height tells the player to fill the parent containers space
@@ -200,18 +204,17 @@ const CarrouselYoutube = (props: {
             ref={iframe}
             tabindex="-1"
             id={`ciframe-yt-${props.metadata.idx}`}
-            className="rounded-md"
         ></div>
     );
 
     return vplayer;
 };
 
-export const CarrouselContent = (props: {
+export const CarrouselContent: Component<{
     content: CarrouselContainer;
     metadata: MetaData;
     next: () => void;
-}) => {
+}> = (props) => {
     let content;
     switch (props.content.type) {
         case "image":
@@ -247,22 +250,23 @@ export const CarrouselContent = (props: {
     }
     return props.content.anchor.href ? (
         <a
-            tabindex={props.metadata.active ? "-1" : ""}
+            tabindex={props.metadata.active ? "" : "-1"}
             href={props.content.anchor.href}
             target={props.content.anchor.target}
-            title={props.content.anchor.label as string}
-            className="relative rounded-md w-full h-full"
+            title={`${props.content.anchor.label} (Slide ${props.metadata.idx+1})`}
+            class="relative w-full h-full"
+            aria-label={`Slide ${props.metadata.idx}`}
         >
             {props.content.anchor.label && (
-                <span className="w-full h-full absolute top-0 left-0 flex justify-center items-center z-10 rounded-md">
-                    <h3 className="text-center text-2xl font-bold text-white tracking-wide">
+                <span class="w-full h-full absolute top-0 left-0 flex justify-center items-center z-10">
+                    <h3 class="text-center text-2xl font-bold text-white tracking-wide">
                         {props.content.anchor.label}
                     </h3>
                 </span>
             )}
             {content}
             {props.content.anchor.label && (
-                <div className="w-full h-full absolute top-0 left-0 bg-slate-700/50 backdrop-blur-[2px] rounded-md"></div>
+                <div class="w-full h-full absolute top-0 left-0 bg-slate-700/50 backdrop-blur-[2px]"></div>
             )}
         </a>
     ) : (

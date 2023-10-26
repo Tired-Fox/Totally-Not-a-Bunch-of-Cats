@@ -1,7 +1,8 @@
 import { Icon } from "@iconify-icon/solid";
 import { type TeamMember, type TeamMembers } from "@script/constants";
 import { fetchJson, uri } from "@script/utils";
-import { createEffect, createResource, splitProps } from "solid-js";
+import { Suspense, createEffect, createResource, createSignal, splitProps, type JSX } from "solid-js";
+import '@style/animations.css';
 
 type BinderProps = {
     class: string;
@@ -13,52 +14,113 @@ const fetchTeam = async (url: URL) => {
     return fetchJson(url, uri('/api/tm/@All.json'));
 }
 
+const BinderSkeleton = (props: BinderProps) => {
+    return (
+        <section
+            class={`flex flex-wrap w-full h-fit justify-around ${props.class}`}
+        >
+            <CardSkeleton
+                direction="left"
+            />
+            <CardSkeleton
+                direction="right"
+            />
+            <CardSkeleton
+                direction="left"
+            />
+        </section>
+    );
+}
+
+const CardSkeleton = (props: {direction?: "left" | "right";}) => {
+    let fillLines = [];
+    for (let i = 0; i < 8; i++) {
+        fillLines.push(<div class="w-full h-[1ch] py-1 skeleton my-1 rounded-full"></div>)
+    }
+    return (
+        <div
+            class={`w-full p-4 flex items-center flex-col ${props.direction === "left" ? "md:flex-row" : "md:flex-row-reverse"
+                }`}
+        >
+            <div class='mb-4'>
+                <div class={`w-[15rem] h-[7rem] aspect-video rounded-md shadow-sm ml-auto skeleton`}></div>
+                <div class="w-[12ch] h-[1ch] rounded-full mx-auto skeleton mt-2"></div>
+                <div class="flex h-[1ch] rounded-full gap-2 mx-auto mt-3 w-[24ch] skeleton"></div>
+            </div>
+            <div class="flex flex-col justify-center items-center w-full p-8">
+                <div class="w-[calc(100%-1rem)] h-[1ch] py-1 skeleton ml-auto my-1 rounded-full"></div>
+                {fillLines}
+                <div class="w-[calc(100%-3rem)] h-[1ch] py-1 skeleton mr-auto my-1 rounded-full"></div>
+                <SocialsSkeleton />
+            </div>
+        </div>
+    );
+}
+
+const SocialsSkeleton = () => {
+    return (
+        <div class="flex flex-col gap-1 justify-center w-full">
+            <div class="mt-4 mb-2">
+                <div class="w-[40%] h-[3px] mx-auto bg-slate-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
+                <div class="w-[20%] h-[3px] mx-auto bg-slate-700/10 text-transparent rounded-lg">-</div>
+            </div>
+            <div class="flex justify-center gap-3">
+                <div class="w-5 h-5 skeleton rounded-full"></div>
+                <div class="w-5 h-5 skeleton rounded-full"></div>
+                <div class="w-5 h-5 skeleton rounded-full"></div>
+            </div>
+        </div>
+    );
+};
+
 export const Binder = (props: BinderProps) => {
-    const [team, { mutate, refetch }] = createResource<TeamMembers>(props.url, fetchTeam);
+    const [team, {mutate, refetch}] = createResource<TeamMembers, URL>(props.url, fetchTeam);
 
     createEffect(() => {
         console.log(team())
     })
 
     return (
-        <section
-            className={`flex flex-wrap w-full h-fit justify-around ${props.class}`}
-        >
-            {
-                team() &&
-                Object.entries(team()).map(([tag, info], idx) => {
-                    const [data, rest] = splitProps(info, ["content"]);
-                    console.log("REST", rest, "||", data)
-                    return (
-                        <Card
-                            name={tag}
-                            direction={idx % 2 === 0 ? "left" : "right"}
-                            {...rest}
-                        >
-                            {data.content}
-                        </Card>
-                    );
-                })
-            }
-        </section>
+        <Suspense fallback={<BinderSkeleton {...props} />}>
+            <section
+                class={`flex flex-wrap w-full h-fit justify-around ${props.class}`}
+            >
+                {
+                    team() !== undefined &&
+                    Object.entries(team() as TeamMembers).map(([tag, info], idx) => {
+                        const [data, rest] = splitProps(info, ["content"]);
+                        console.log("REST", rest, "||", data)
+                        return (
+                            <Card
+                                name={tag}
+                                direction={idx % 2 === 0 ? "left" : "right"}
+                                {...rest}
+                            >
+                                {data.content}
+                            </Card>
+                        );
+                    })
+                }
+            </section>
+        </Suspense>
     );
 };
 
 type CardProps = {
     name: string;
-    children: HTMLElement | never[] | any[] | string;
+    children?: JSX.Element | string;
     direction?: "left" | "right";
-} & TeamMember;
+} & Omit<TeamMember, 'content'>;
 
 const Card = (props: CardProps) => {
     return (
         <div
-            className={`w-full p-4 flex items-center flex-col ${props.direction === "left" ? "md:flex-row" : "md:flex-row-reverse"
+            class={`w-full p-4 flex items-center flex-col ${props.direction === "left" ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
         >
-            <div className={`mb-4`}>
+            <div class={`mb-4`}>
                 <img
-                    className={`w-[25rem] rounded-md shadow-sm ${"ml-auto"}`}
+                    class={`w-[25rem] rounded-md shadow-sm ${"ml-auto"}`}
                     src={props.img}
                     alt={`${props.name} Profile Picture`}
                 />
@@ -67,25 +129,25 @@ const Card = (props: CardProps) => {
                         href={props.personal.href}
                         title={props.personal.name}
                         target="_blank"
-                        className={`w-full hover:text-blue-300 flex justify-center`}
+                        class={`w-full hover:text-blue-300 flex justify-center`}
                     >
-                        <em className="text-sm">{props.name}</em>
+                        <em class="text-sm">{props.name}</em>
                     </a>
                 ) : (
-                    <div className="w-fit mx-auto">
-                        <em className="text-sm">{props.name}</em>
+                    <div class="w-fit mx-auto">
+                        <em class="text-sm">{props.name}</em>
                     </div>
                 )}
-                <div className="flex gap-2 justify-center mt-3">
+                <div class="flex gap-2 justify-center mt-3">
                     {
-                        <strong className="text-sm text-center">
+                        <strong class="text-sm text-center">
                             {props.titles?.join(" & ")}
                         </strong>
                     }
                 </div>
             </div>
-            <div className="flex flex-col justify-center items-center w-full p-8">
-                <p className="indent-4">
+            <div class="flex flex-col justify-center items-center w-full p-8">
+                <p class="indent-4">
                     {props.children}
                 </p>
                 {props.socials && <Socials links={props.socials} />}
@@ -100,19 +162,19 @@ type SocialsProps = {
 
 const Socials = (props: SocialsProps) => {
     return (
-        <div className="flex flex-col gap-1 justify-center w-full">
-            <div className="mt-4 mb-2">
-                <div className="w-[40%] h-[3px] mx-auto bg-slate-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
-                <div className="w-[20%] h-[3px] mx-auto bg-slate-700/10 text-transparent rounded-lg">-</div>
+        <div class="flex flex-col gap-1 justify-center w-full">
+            <div class="mt-4 mb-2">
+                <div class="w-[40%] h-[3px] mx-auto bg-slate-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
+                <div class="w-[20%] h-[3px] mx-auto bg-slate-700/10 text-transparent rounded-lg">-</div>
             </div>
-            <div className="flex justify-center gap-3">
+            <div class="flex justify-center gap-3">
                 {
                     Object.entries(props.links).map(([name, info]) => (
                         <a
                             href={info.href}
                             target="_blank"
                             title={`${name} ↗`}
-                            className="hover:text-blue-300"
+                            class="hover:text-blue-300"
                         >
 
                             <Icon icon={info.icon} inline mode="svg" width="1.25rem" height="1.25rem" />

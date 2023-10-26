@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "strictNullChecks": true,
     "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "allowJs": true,
     "paths": {
         "@component/*": ["src/components/*"],

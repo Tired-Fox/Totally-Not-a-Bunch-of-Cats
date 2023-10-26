@@ -10,7 +10,7 @@ const posts = (await getCollection("blog")).sort(
 ---
 
 <Layout>
-  <ul class="flex flex-wrap gap-4 gap-y-6 mb-12">
+  <ul class="flex flex-wrap gap-4 gap-y-6 mb-12 p-4">
     {
       posts.map((post, idx) => (
         <li class="w-full md:w-[calc(50%-.5rem)] md:first:w-full">
@@ -20,7 +20,7 @@ const posts = (await getCollection("blog")).sort(
           >
             <img
               transition:name={`hero-image-${post.data.title}`}
-              class="rounded-md w-full mb-2 shadow-md"
+              class="rounded-md w-full mb-2 shadow-md aspect-video"
               width={720}
               height={360}
               src={uri(post.data.heroImage ?? '')}
@@ -29,10 +29,10 @@ const posts = (await getCollection("blog")).sort(
             <div 
                 class="flex flex-col justify-between gap-x-6"
                 class:list={{"md:flex-row": idx === 0}}
+                transition:name={`hero-title-${post.data.title}-date-${post.data.pubDate}`}
             >
               <div
                 class="flex-[2]"
-                transition:name={`hero-title-${post.data.title}-date-${post.data.pubDate}`}
               >
                 <h4 class="text-lg font-bold w-fit">{post.data.title}</h4>
                 <div class="flex gap-2">
