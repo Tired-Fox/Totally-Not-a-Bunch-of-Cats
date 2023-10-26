@@ -1,5 +1,7 @@
 ---
 import Layout from "@layout/Layout.astro";
+import { Icon } from "astro-icon";
+import FormattedDate from "@component/FormattedDate.astro";
 import "@style/animations.css";
 import "@style/custom.css";
 
@@ -7,6 +9,23 @@ import { Carrousel, image } from "@solid/carrousel/carrousel";
 
 import { getCollection } from "astro:content";
 import { uri } from "@script/utils";
+
+let blog_posts = (await getCollection("blog"))
+  ?.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map(({ slug, collection, data: { title, description, author, pubDate, heroImage } }) => {
+    return {
+      href: uri(`${collection}/${slug}`),
+      src: uri(heroImage ?? ""),
+      title,
+      pubDate,
+      author,
+      description
+    };
+  });
+
+if (blog_posts.length > 3) {
+    blog_posts = blog_posts.slice(0, 3);
+}
 
 let project_posts = (await getCollection("project"))
   ?.sort(
@@ -40,7 +59,7 @@ if (project_posts.length > 5) {
       </style>
       <div
         id="landing-clip"
-        class="w-[98%] md:w-[90%] aspect-video max-w-[1080px] mx-auto min-h-[50vh] relative mt-4 rounded-md overflow-hidden"
+        class="w-[98%] md:w-[90%] aspect-video max-w-[1080px] mx-auto min-h-[50vh] relative rounded-md overflow-hidden"
       >
         <iframe
           width="1920"
@@ -68,20 +87,65 @@ if (project_posts.length > 5) {
         </div>
       </div>
     
-      <section>
-          <h2 class="text-2xl">More about us</h2>
+      <section 
+        class="mt-[12rem] min-h-screen md:min-h-[75vh] flex items-center bg-slate-100 w-[99%] mx-auto rounded-md shadow-inner"
+        transition:animate="none"
+      >
+        <div class="mx-auto w-[70%] md:w-[85%] lg:w-full max-w-[80rem] flex flex-col md:flex-row items-center md:items-start justify-center md:justify-around gap-y-[8rem]">
+            <div class="w-[80] md:w-1/4">
+                <Icon name="mdi:controller-outline" class="w-[3rem] aspect-square mx-auto mb-4" />
+                <p class="text-center">While we are cat themed, we also strive to make games of multiple genres that fit many different audiences.</p>
+            </div>
+            <div class="w-[80] md:w-1/4">
+                <Icon name="mdi:brush-outline" class="w-[3rem] aspect-square mx-auto mb-4" />
+                <p class="text-center">
+                    Most teams and studios have their own art theme, well, we do as well.
+                </p>
+            </div>
+            <div class="w-[80] md:w-1/4">
+                <Icon name="fluent:emoji-laugh-20-filled" class="w-[3rem] aspect-square mx-auto mb-4" />
+                <p class="text-center">Our games fit multiple different audiences. Don't worry those audiences still enjoy the games to their fullest.</p>
+            </div>
+        </div>
       </section>
 
-      <Carrousel
-        class="my-[15rem]"
-        content={project_posts}
-        full
-        transition:animate="none"
-        client:load
-      />
-
-      <section>
-          <h2 class="text-2xl">Annoucements</h2>
+      <section
+        class="my-[6rem]"
+      >
+          <h2 class="text-3xl font-bold text-center" transition:animate="none">Annoucements</h2>
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-4 justify-around my-[4rem] max-w-[80rem] mx-auto">
+            {
+                blog_posts.map(data => (
+                    <a href={data.href} class="w-fit hover:text-blue-300">
+                        <img
+                          src={data.src}
+                          class="w-[20rem] inline-block aspect-video rounded-md shadow shadow-slate-800/40" 
+                          alt={`${data.title} Image`}
+                          transition:name={`hero-image-${data.title}`} transition:animate="fade"
+                        />
+                        <div class="w-full h-fit" transition:name={`hero-title-${data.title}-date-${data.pubDate}`} transition:animate="fade">
+                            <p class="text-md font-bold">{data.title}</p>
+                            <em class="text-sm text-zinc-800">@{data.author} ~ <FormattedDate date={data.pubDate} /></em>
+                        </div>
+                        <p class="mt-2 indent-6 text-zinc-800" transition:animate="none">{data.description}</p>
+                    </a>
+                ))
+            }
+          </div>
           <a href={uri("/blog")} class="px-4 py-2 transition-colors bg-slate-500 hover:bg-slate-300 rounded-full shadow shadow-slate-700/20 text-zinc-100 block w-fit mx-auto" >More Posts</a>
+      </section>
+
+      <section 
+        class="my-[6rem]" 
+        transition:animate="none"
+      >
+        <Carrousel
+            class="shadow-md shadow-slate-700/30 mb-[4rem] max-w-[80rem] mx-auto"
+            content={project_posts}
+            full
+            transition:animate="none"
+            client:load
+        />
+        <a href={uri("/project")} class="px-4 py-2 transition-colors bg-slate-500 hover:bg-slate-300 rounded-full shadow shadow-slate-700/20 text-zinc-100 block w-fit mx-auto" >More Projects</a>
       </section>
 </Layout>

@@ -10,7 +10,6 @@ type BinderProps = {
 };
 
 const fetchTeam = async (url: URL) => {
-    console.log('fetching team data');
     return fetchJson(url, uri('/api/tm/@All.json'));
 }
 
@@ -76,10 +75,6 @@ const SocialsSkeleton = () => {
 export const Binder = (props: BinderProps) => {
     const [team, {mutate, refetch}] = createResource<TeamMembers, URL>(props.url, fetchTeam);
 
-    createEffect(() => {
-        console.log(team())
-    })
-
     return (
         <Suspense fallback={<BinderSkeleton {...props} />}>
             <section
@@ -89,7 +84,6 @@ export const Binder = (props: BinderProps) => {
                     team() !== undefined &&
                     Object.entries(team() as TeamMembers).map(([tag, info], idx) => {
                         const [data, rest] = splitProps(info, ["content"]);
-                        console.log("REST", rest, "||", data)
                         return (
                             <Card
                                 name={tag}

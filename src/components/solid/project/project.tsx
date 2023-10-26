@@ -54,10 +54,9 @@ export function Projects(props: Props) {
   });
   // onChange={(e) => setGroupBy(e.target.value)}
   return (
-    <div class="my-4">
+    <div class="my-4 p-2">
       <div class="flex gap-6 flex-wrap">
         {props.posts.map((post) => {
-          //   console.log(post);
           return (
             <a
               href={uri(`${post.collection}/${post.slug}`)}

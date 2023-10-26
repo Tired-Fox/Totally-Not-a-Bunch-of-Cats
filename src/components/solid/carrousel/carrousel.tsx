@@ -95,7 +95,6 @@ export const Carrousel: Component<CarrouselProps> = (props) => {
         scolor = 'bg-slate-500';
         ucolor = 'bg-slate-500/30';
     }
-    console.log(props.full, scolor, ucolor);
     
 
     let lastInterval: NodeJS.Timer;
