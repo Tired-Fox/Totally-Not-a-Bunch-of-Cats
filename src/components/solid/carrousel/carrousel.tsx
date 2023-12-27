@@ -87,13 +87,13 @@ export const Carrousel: Component<CarrouselProps> = (props) => {
         ["class", "full"]
     );
 
-    let scolor = 'bg-slate-500', ucolor = 'bg-slate-500/30';
+    let scolor = 'bg-zinc-500', ucolor = 'bg-zinc-500/30';
     if (props.full) {
-        scolor = 'bg-slate-400';
-        ucolor='bg-slate-400/40';
+        scolor = 'bg-zinc-400';
+        ucolor='bg-zinc-400/40';
     } else {
-        scolor = 'bg-slate-500';
-        ucolor = 'bg-slate-500/30';
+        scolor = 'bg-zinc-500';
+        ucolor = 'bg-zinc-500/30';
     }
     
 
@@ -135,12 +135,12 @@ export const Carrousel: Component<CarrouselProps> = (props) => {
         <section class={`${style.full ? '':`my-2 mx-auto`} w-full hover-arrows relative`} {...rest}>
             <div
                 ref={wrapper}
-                class={`w-full relative overflow-x-hidden ${props.full ? '':'shadow-md shadow-slate-700/30 rounded-md max-w-[90ch]'} ${style.class}`}
+                class={`w-full relative overflow-x-hidden ${props.full ? '':'shadow-md shadow-zinc-700/30 rounded-md max-w-[90ch]'} ${style.class}`}
             >
                 {!props["no-arrows"] && (
                     <button
                         type="button"
-                        class="carrousel-arrow transition-opacity opacity-0 duration-100 absolute top-[50%] left-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
+                        class="carrousel-arrow transition-opacity opacity-0 duration-100 absolute top-[50%] left-2 w-fit h-fit z-20 bg-zinc-100/20 pointer-events-auto rounded-full p-2 hover:bg-zinc-100"
                         onClick={previous}
                     >
                         <svg
@@ -190,7 +190,7 @@ export const Carrousel: Component<CarrouselProps> = (props) => {
                 {!props["no-arrows"] && (
                     <button
                         type="button"
-                        class="carrousel-arrow transition-opacity duration-100 opacity-0 absolute top-[50%] right-2 w-fit h-fit z-20 bg-slate-100/20 pointer-events-auto rounded-full p-2 hover:bg-slate-100"
+                        class="carrousel-arrow transition-opacity duration-100 opacity-0 absolute top-[50%] right-2 w-fit h-fit z-20 bg-zinc-100/20 pointer-events-auto rounded-full p-2 hover:bg-zinc-100"
                         onClick={next}
                     >
                         <svg

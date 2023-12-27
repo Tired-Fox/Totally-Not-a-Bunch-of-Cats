@@ -15,17 +15,18 @@ const getExtern = (extern: boolean): object => {
 ---
 
 <div class="w-fit h-fit">
-  <em class="text-lg font-bold text-slate-700/30">{toTitleCase(name)}</em>
+  <em class="text-lg font-bold text-zinc-700/30">{toTitleCase(name)}</em>
   <ul class="pl-6">
     {
       links &&
         Object.entries(links).map(
           ([name, { uri, description, extern = false }]) => (
-            <li class="list-disc list-outside text-slate-700/40">
+            <li class="list-disc list-outside text-zinc-700/40">
               <a
                 href={uri}
                 {...getExtern(extern)}
-                class="text-sm font-semibold text-slate-800/70 hover:text-blue-300"
+                class="text-sm font-semibold text-zinc-800/70 hover:underline"
+                target="_blank"
               >
                 {toTitleCase(name)}
               </a>

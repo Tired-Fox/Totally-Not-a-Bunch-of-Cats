@@ -3,7 +3,7 @@
 }
 
 dialog::backdrop {
-    @apply bg-slate-700/20
+    @apply bg-zinc-700/20
 }
 
 .select {

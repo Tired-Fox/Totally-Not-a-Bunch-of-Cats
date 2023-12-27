@@ -40,7 +40,7 @@ export const Header = (props: Props) => {
     <>
         <header class="w-full z-40 block md:hidden">
             <div class="w-full max-w-[120ch] mx-auto flex justify-end">
-                <div class="my-2 mr-3 w-12 h-12 bg-slate-100 rounded-full shadow-md border-2 border-dashed border-slate-300  pointer-events-auto">
+                <div class="my-2 mr-3 w-12 h-12 bg-zinc-100 rounded-full shadow-md pointer-events-auto">
                 <button
                     type="button"
                     ref={openButton}
@@ -66,13 +66,13 @@ export const Header = (props: Props) => {
 
             <div
                 class={`absolute top-0 left-0 w-full h-screen flex justify-end z-40 ${
-                open() ? "bg-slate-700/20 backdrop-blur-2xl pointer-events-auto" : "pointer-events-none"
+                open() ? "bg-zinc-700/20 backdrop-blur-2xl pointer-events-auto" : "pointer-events-none"
                 }`}
                 onClick={toggleMenu}
             >
                 <nav
                 id="header-nav"
-                class={`transition-transform linear duration-200 w-screen md:w-[20rem] h-screen bg-slate-100 md:rounded-l-lg shadow-lg shadow-slate-800 border-y-2 border-l-2 border-dashed border-slate-400 overflow-hidden flex flex-col items-end backdrop-blur-md backdrop-brightness-150 ${open() ? "" : "translate-x-[100vw] border-transparent scale-x-0"}`}
+                class={`transition-transform linear duration-200 w-screen md:w-[20rem] h-screen bg-zinc-100 md:rounded-l-lg shadow-lg shadow-zinc-800 overflow-hidden flex flex-col items-end backdrop-blur-md backdrop-brightness-150 ${open() ? "" : "translate-x-[100vw] border-transparent scale-x-0"}`}
                 onClick={e => e.stopPropagation()}
                 >
                     <div class="w-full h-fit flex items-center justify-between px-1 py-4 pl-6">
@@ -81,7 +81,7 @@ export const Header = (props: Props) => {
                             <button
                                 type="button"
                                 ref={closeButton}
-                                class="toggle-menu w-full h-full flex justify-center items-center hover:text-rose-500 text-slate-900"
+                                class="toggle-menu w-full h-full flex justify-center items-center hover:text-rose-500 text-zinc-900"
                                 onClick={toggleMenu}
                             >
                                 <svg
@@ -101,7 +101,7 @@ export const Header = (props: Props) => {
                         </div>
                     </div>
                     <div class="w-full h-full flex flex-col justify-center items-center">
-                        <em class="text-slate-700/40 text-3xl font-bold">Menu</em>
+                        <em class="text-zinc-700/40 text-3xl font-bold">Menu</em>
                         <ul class="mt-2 text-lg list-disc list-inside">
                             { menu &&
                                 Object.entries(menu).map(([name, info]) => (
@@ -118,8 +118,8 @@ export const Header = (props: Props) => {
             </div>
         </header>
         <header class="w-full z-40 hidden md:block sticky top-0">
-            <div class="flex items-center justify-between w-[100%] max-w-[115ch] bg-slate-100 h-fit mx-auto rounded-b-md px-5 py-3 border-b-2 border-x-2 border-slate-300 border-dashed shadow-md shadow-slate-800/40 pointer-events-auto">
-                <a href={uri("/")} class="text-xl font-bold hover:text-blue-300">
+            <div class="flex items-center justify-between w-[100%] max-w-[115ch] bg-zinc-100 h-fit mx-auto rounded-full mt-2 px-5 py-3 shadow-md shadow-zinc-800/40 pointer-events-auto">
+                <a href={uri("/")} class="text-xl font-bold hover:underline">
                     Totally Not a Bunch of Cats
                 </a>
                 <ul class="text-lg flex gap-4 items-center">

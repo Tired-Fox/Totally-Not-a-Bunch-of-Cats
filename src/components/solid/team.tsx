@@ -60,8 +60,8 @@ const SocialsSkeleton = () => {
     return (
         <div class="flex flex-col gap-1 justify-center w-full">
             <div class="mt-4 mb-2">
-                <div class="w-[40%] h-[3px] mx-auto bg-slate-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
-                <div class="w-[20%] h-[3px] mx-auto bg-slate-700/10 text-transparent rounded-lg">-</div>
+                <div class="w-[40%] h-[3px] mx-auto bg-zinc-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
+                <div class="w-[20%] h-[3px] mx-auto bg-zinc-700/10 text-transparent rounded-lg">-</div>
             </div>
             <div class="flex justify-center gap-3">
                 <div class="w-5 h-5 skeleton rounded-full"></div>
@@ -123,7 +123,7 @@ const Card = (props: CardProps) => {
                         href={props.personal.href}
                         title={props.personal.name}
                         target="_blank"
-                        class={`w-full hover:text-blue-300 flex justify-center`}
+                        class={`w-full hover:underline flex justify-center`}
                     >
                         <em class="text-sm">{props.name}</em>
                     </a>
@@ -158,8 +158,8 @@ const Socials = (props: SocialsProps) => {
     return (
         <div class="flex flex-col gap-1 justify-center w-full">
             <div class="mt-4 mb-2">
-                <div class="w-[40%] h-[3px] mx-auto bg-slate-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
-                <div class="w-[20%] h-[3px] mx-auto bg-slate-700/10 text-transparent rounded-lg">-</div>
+                <div class="w-[40%] h-[3px] mx-auto bg-zinc-700/10 text-transparent my-[.1rem] rounded-lg">-</div>
+                <div class="w-[20%] h-[3px] mx-auto bg-zinc-700/10 text-transparent rounded-lg">-</div>
             </div>
             <div class="flex justify-center gap-3">
                 {
@@ -168,7 +168,7 @@ const Socials = (props: SocialsProps) => {
                             href={info.href}
                             target="_blank"
                             title={`${name} ↗`}
-                            class="hover:text-blue-300"
+                            class="text-zinc-700/60 hover:text-zinc-700/90"
                         >
 
                             <Icon icon={info.icon} inline mode="svg" width="1.25rem" height="1.25rem" />

@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { createEffect, createSignal } from "solid-js";
 import "@style/animations.css";
 import "@style/custom.css";
+import { Icon } from "@iconify-icon/solid";
 
 type Props = {
   posts: CollectionEntry<"project">[];
@@ -52,27 +53,58 @@ export function Projects(props: Props) {
   createEffect(() => {
     genGroups(groupBy());
   });
+
+  const PLATFORMS: Record<string, string> = {
+    mobile: "phone",
+    desktop: "computer",
+    web: "browse",
+  };
+  const platform = (name: string) => {
+    return PLATFORMS[name];
+  };
+
+  const chunk = (arr: CollectionEntry<"project">[], size: number) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    );
+  };
   // onChange={(e) => setGroupBy(e.target.value)}
   return (
-    <div class="my-4 p-2">
-      <div class="flex gap-6 flex-wrap">
-        {props.posts.map((post) => {
-          return (
-            <a
-              href={uri(`${post.collection}/${post.slug}`)}
-              class="relative aspect-[5/8] w-[10rem] border border-solid borrder-black rounded-md overflow-hidden shadow-sm shadow-slate-700/60 hover:ring-2 ring-slate-300 ring-offset-1"
+    <div class="columns-1 md:columns-2 gap-8 px-4 w-full">
+        {props.posts.map((project) => {
+            let titleId = project.slug.replace('/','_') + '-title';
+            let descId = project.slug.replace('/','_') + '-desc';
+            return <a
+                class="block my-4"
+                href={uri(`${project.collection}/${project.slug}`)}
+                aria-labelledby={titleId}
+                aria-aria-describedby={descId}
             >
-              <div class="w-full h-full absolute top-0 left-0 backdrop-blur-[3px] bg-slate-700/5 z-10 text-white flex items-end justify-center py-[25%] font-bold tracking-wide">
-                {post.data.title}
-              </div>
-              <img
-                src={uri(post.data.coverImage)}
-                class="w-full h-full"
-              />
+                <img
+                    src={uri(project.data.coverImage)}
+                    alt={project.data.title}
+                    class="h-auto max-w-full rounded-lg"
+                />
+                <div class="flex justify-between items-center my-2">
+                    <h2 id={titleId} class="text-lg font-bold">{project.data.title}</h2>
+                    <div class="flex">
+                    {project.data.platforms &&
+                        project.data.platforms.map((name) => (
+                        <Icon
+                            icon={`jam:${platform(name)}`}
+                            inline
+                            mode="svg"
+                            width="1.5rem"
+                            height="1.5rem"
+                            title={name}
+                            aria-label={`Supports ${name} platform`}
+                        />
+                        ))}
+                    </div>
+                </div>
+                <p id={descId} class="indent-6" aria-label="description">{project.data.description}</p>
             </a>
-          );
         })}
-      </div>
     </div>
   );
 }

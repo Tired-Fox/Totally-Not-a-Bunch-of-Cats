@@ -266,7 +266,7 @@ export const CarrouselContent: Component<{
             )}
             {content}
             {props.content.anchor.label && (
-                <div class="w-full h-full absolute top-0 left-0 bg-slate-700/50 backdrop-blur-[2px]"></div>
+                <div class="w-full h-full absolute top-0 left-0 bg-zinc-700/50 backdrop-blur-[2px]"></div>
             )}
         </a>
     ) : (

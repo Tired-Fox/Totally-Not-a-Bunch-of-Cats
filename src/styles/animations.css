@@ -110,9 +110,9 @@ dialog[open] {
 
 @keyframes skeleton-loading {
     0% {
-      background-color: hsl(200, 20%, 80%);
+      background-color: hsl(197, 8%, 82%);
     }
     100% {
-      background-color: hsl(200, 20%, 95%);
+      background-color: hsl(0, 0%, 96%);
     }
 }

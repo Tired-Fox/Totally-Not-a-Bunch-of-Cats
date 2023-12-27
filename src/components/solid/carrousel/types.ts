@@ -1,4 +1,3 @@
-import type { HTMLAttributes } from "astro/types";
 import { splitProps, type JSX } from "solid-js";
 
 export type CarrouselAttributes = {

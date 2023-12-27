@@ -14,10 +14,11 @@ export const HeaderLink = ({
   return (
     <a
       href={href as string}
-      class={`${className} inline-block hover:text-blue-300 ${
+      class={`${className} inline-block hover:underline ${
         isActive ? "underline font-bold" : ""
       }`}
       {...props}
+      aria-current={isActive ? 'page': undefined}
     >
       {children && children}
     </a>
