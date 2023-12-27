@@ -118,8 +118,8 @@ export const Header = (props: Props) => {
             </div>
         </header>
         <header class="w-full z-40 hidden md:block sticky top-0">
-            <div class="flex items-center justify-between w-[100%] max-w-[115ch] bg-zinc-100 h-fit mx-auto rounded-full mt-2 px-5 py-3 shadow-md shadow-zinc-800/40 pointer-events-auto">
-                <a href={uri("/")} class="text-xl font-bold hover:underline">
+            <div class="flex items-center justify-between w-[100%] max-w-[115ch] bg-zinc-100 h-fit mx-auto rounded-full mt-2 px-8 py-3 shadow-md shadow-zinc-800/40 pointer-events-auto">
+                <a href={uri("/")} class="text-xl font-bold">
                     Totally Not a Bunch of Cats
                 </a>
                 <ul class="text-lg flex gap-4 items-center">
